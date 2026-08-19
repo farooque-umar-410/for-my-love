@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Made With Love For You 💖 | An Exclusive Experience</title>
+    <title>Made With Love For You ðŸ’– | An Exclusive Experience</title>
     <meta name="description" content="A special, interactive corner created with love to make you smile, lift your mood, and remind you how special you are.">
     
     <!-- Google Fonts -->
@@ -14,7 +14,870 @@
     <!-- Confetti & Canvas Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+/* ==========================================================================
+   Design System & Color Tokens
+   Theme: Midnight Rose & Glowing Neon Heart Luxury Aesthetic
+   ========================================================================== */
+
+:root {
+    --bg-dark: #0b0c14;
+    --bg-surface: rgba(22, 24, 38, 0.7);
+    --bg-surface-hover: rgba(32, 36, 56, 0.85);
+    
+    --primary-pink: #ff4d8d;
+    --primary-rose: #ff2a6d;
+    --primary-purple: #9d4edd;
+    --primary-violet: #7928ca;
+    --accent-gold: #ffd166;
+    --accent-glow: rgba(255, 77, 141, 0.4);
+
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --border-glass: rgba(255, 255, 255, 0.12);
+    --border-glow: rgba(255, 77, 141, 0.35);
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+
+    --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --shadow-glow: 0 0 25px rgba(255, 77, 141, 0.45);
+    --shadow-glow-purple: 0 0 30px rgba(157, 78, 221, 0.4);
+}
+
+/* ==========================================================================
+   Reset & Global Typography
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* Ambient Canvas Background */
+#ambient-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Subtle Gradient Orbs */
+body::before {
+    content: '';
+    position: fixed;
+    top: -10vw;
+    left: -10vw;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(255, 77, 141, 0.18) 0%, rgba(121, 40, 202, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatOrb 14s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -10vw;
+    right: -10vw;
+    width: 55vw;
+    height: 55vw;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, rgba(255, 42, 109, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatOrb 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* Script Typography */
+.script-font {
+    font-family: 'Dancing Script', cursive;
+}
+
+/* ==========================================================================
+   Top Navigation
+   ========================================================================== */
+
+.top-nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(11, 12, 20, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-glass);
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+}
+
+.heart-pulse {
+    display: inline-block;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.25); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.2); }
+    70% { transform: scale(1); }
+}
+
+.nav-controls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pill-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.pill-btn:hover {
+    background: var(--bg-surface-hover);
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 15px rgba(255, 77, 141, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Main Layout & Glass Panels
+   ========================================================================== */
+
+.main-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.glass-panel {
+    background: var(--bg-surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(255, 77, 141, 0.3);
+}
+
+.section-tag {
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--primary-pink);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    background: rgba(255, 77, 141, 0.1);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 77, 141, 0.25);
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-header.center {
+    text-align: center;
+}
+
+.section-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+
+.hero-section {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.tagline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, rgba(255, 77, 141, 0.15), rgba(157, 78, 221, 0.15));
+    border: 1px solid var(--border-glow);
+    padding: 0.45rem 1.25rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent-gold);
+    margin-bottom: 1.75rem;
+    box-shadow: 0 0 20px rgba(255, 77, 141, 0.2);
+}
+
+.hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 40%, #c084fc 80%, #ffd166 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Buttons & Interactive Elements
+   ========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.8rem;
+    border-radius: var(--radius-full);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+    outline: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-violet));
+    color: #ffffff;
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 35px rgba(255, 77, 141, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 77, 141, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 77, 141, 0.25);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 0.75rem 1.4rem;
+}
+
+.btn-outline:hover {
+    color: var(--text-primary);
+    border-color: var(--primary-pink);
+}
+
+.btn-large-love {
+    background: linear-gradient(135deg, #ff2a6d 0%, #ff6584 50%, #9d4edd 100%);
+    color: #ffffff;
+    padding: 1.25rem 2.5rem;
+    font-size: 1.2rem;
+    box-shadow: 0 0 40px rgba(255, 42, 109, 0.6);
+    border-radius: var(--radius-full);
+}
+
+.btn-large-love:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 60px rgba(255, 42, 109, 0.8);
+}
+
+.btn-large-love .big-heart {
+    font-size: 1.5rem;
+    animation: pulse 1.2s infinite;
+}
+
+/* ==========================================================================
+   Mood Check-In Cards
+   ========================================================================== */
+
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.mood-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--text-primary);
+}
+
+.mood-card:hover, .mood-card.active {
+    background: linear-gradient(145deg, rgba(255, 77, 141, 0.15), rgba(157, 78, 221, 0.15));
+    border-color: var(--primary-pink);
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(255, 77, 141, 0.35);
+}
+
+.mood-emoji {
+    font-size: 2.2rem;
+    transition: transform 0.3s ease;
+}
+
+.mood-card:hover .mood-emoji {
+    transform: scale(1.25) rotate(6deg);
+}
+
+.mood-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Dynamic Mood Response Box */
+.mood-response-box {
+    background: linear-gradient(135deg, rgba(255, 77, 141, 0.12), rgba(121, 40, 202, 0.15));
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mood-response-box.hidden {
+    display: none;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.response-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.mood-response-box h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.mood-response-box p {
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    max-width: 650px;
+    margin: 0 auto 1.25rem;
+}
+
+/* ==========================================================================
+   5-Second Super Hug Meter
+   ========================================================================== */
+
+.hug-meter-section {
+    text-align: center;
+}
+
+.hug-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hug-button-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 2rem auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+    stroke-dasharray: 439.82;
+    stroke-dashoffset: 439.82;
+    transition: stroke-dashoffset 0.05s linear;
+}
+
+.hug-hold-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff2a6d, #ff6584);
+    border: none;
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    box-shadow: 0 0 30px rgba(255, 42, 109, 0.5);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 2;
+}
+
+.hug-hold-btn:active, .hug-hold-btn.holding {
+    transform: scale(0.94);
+    box-shadow: 0 0 50px rgba(255, 42, 109, 0.9);
+}
+
+.hug-heart-icon {
+    font-size: 1.75rem;
+}
+
+.hug-status {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    min-height: 24px;
+}
+
+/* ==========================================================================
+   3D Flip Cards Section
+   ========================================================================== */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+}
+
+.flip-card {
+    background-color: transparent;
+    height: 260px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-glass);
+}
+
+.flip-card-front {
+    background: var(--bg-surface);
+    backdrop-filter: blur(16px);
+}
+
+.card-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.card-icon {
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.flip-card-front h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.tap-hint {
+    font-size: 0.8rem;
+    color: var(--primary-pink);
+    font-weight: 600;
+}
+
+.flip-card-back {
+    background: linear-gradient(145deg, #241434, #181428);
+    border-color: var(--primary-pink);
+    transform: rotateY(180deg);
+    box-shadow: var(--shadow-glow);
+}
+
+.back-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.flip-card-back h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.flip-card-back p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   Instant Affirmation Generator
+   ========================================================================== */
+
+.booster-wrapper {
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.booster-display {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 2rem 2.5rem;
+    margin: 1.75rem 0;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.booster-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #ffffff;
+    font-style: italic;
+    transition: opacity 0.3s ease;
+}
+
+.booster-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Interactive Wax Seal Envelope
+   ========================================================================== */
+
+.envelope-container {
+    max-width: 620px;
+    margin: 2rem auto;
+    position: relative;
+}
+
+.envelope {
+    position: relative;
+    background: #1e192b;
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 2rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 75px;
+    background: radial-gradient(circle, #e63946, #9b1d20);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 0 25px rgba(230, 57, 70, 0.7);
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.4s ease;
+}
+
+.wax-seal:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 35px rgba(230, 57, 70, 0.9);
+}
+
+.envelope.opened .wax-seal {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.letter-paper {
+    background: linear-gradient(145deg, #1b1629, #13101e);
+    border: 1px solid rgba(255, 77, 141, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 2rem;
+    filter: blur(8px);
+    opacity: 0.4;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.envelope.opened .letter-paper {
+    filter: blur(0);
+    opacity: 1;
+}
+
+.letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.letter-header .script-font {
+    font-size: 2rem;
+    color: var(--accent-gold);
+}
+
+.letter-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.letter-body p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.letter-footer {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+/* ==========================================================================
+   Grand Finale & Infinite Love Counter
+   ========================================================================== */
+
+.grand-finale-section {
+    text-align: center;
+    padding: 3.5rem 2rem;
+}
+
+.love-counter-wrapper {
+    margin: 1.5rem 0;
+}
+
+.counter-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff4d8d, #ffd166, #ff2a6d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.counter-unit {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 10;
+}
+
+.footer-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .top-nav {
+        padding: 1rem 1.25rem;
+    }
+    .hero-title {
+        font-size: 2.35rem;
+    }
+    .main-container {
+        padding: 1.5rem 1rem 4rem;
+        gap: 2.75rem;
+    }
+    .glass-panel {
+        padding: 1.75rem 1.25rem;
+    }
+    .counter-number {
+        font-size: 2.75rem;
+    }
+    .mood-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+</style>
 </head>
 <body>
     <!-- Floating Ambient Hearts Background Canvas -->
@@ -26,15 +889,15 @@
     <!-- Audio & Ambient Toggle -->
     <header class="top-nav">
         <div class="brand">
-            <span class="heart-pulse">💖</span>
+            <span class="heart-pulse">ðŸ’–</span>
             <span class="brand-text">FOR MY FAVORITE PERSON</span>
         </div>
         <div class="nav-controls">
             <button id="sound-btn" class="pill-btn sound-btn" title="Toggle gentle sound effects">
-                <span id="sound-icon">🔔</span> <span id="sound-text">Sound: ON</span>
+                <span id="sound-icon">ðŸ””</span> <span id="sound-text">Sound: ON</span>
             </button>
             <button id="sparkle-btn" class="pill-btn sparkle-btn" title="Shower of Love">
-                ✨ Send Hearts
+                âœ¨ Send Hearts
             </button>
         </div>
     </header>
@@ -45,22 +908,22 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="tagline-badge">
-                <span class="sparkle-icon">✨</span> CRAFTED SPECIALLY FOR YOU <span class="sparkle-icon">✨</span>
+                <span class="sparkle-icon">âœ¨</span> CRAFTED SPECIALLY FOR YOU <span class="sparkle-icon">âœ¨</span>
             </div>
             <h1 class="hero-title">
                 Hey Beautiful, <br>
                 <span class="gradient-text">Take A Breath & Smile</span>
             </h1>
             <p class="hero-subtitle">
-                Whenever your day feels long or you need a little reminder of how extraordinary, loved, and deeply appreciated you are — this little world is here for you.
+                Whenever your day feels long or you need a little reminder of how extraordinary, loved, and deeply appreciated you are â€” this little world is here for you.
             </p>
             <div class="hero-actions">
                 <a href="#mood-section" class="btn btn-primary glow-effect">
                     <span>How Are You Feeling?</span>
-                    <span class="btn-arrow">↓</span>
+                    <span class="btn-arrow">â†“</span>
                 </a>
                 <button id="quick-hug-btn" class="btn btn-secondary">
-                    <span>Give Me A Warm Hug 🤗</span>
+                    <span>Give Me A Warm Hug ðŸ¤—</span>
                 </button>
             </div>
         </section>
@@ -70,39 +933,39 @@
             <div class="section-header">
                 <span class="section-tag">MOOD CHECK-IN</span>
                 <h2>Tell Me, How Are You Feeling Right Now?</h2>
-                <p>Pick whatever is on your mind — no judgment, just lots of love.</p>
+                <p>Pick whatever is on your mind â€” no judgment, just lots of love.</p>
             </div>
 
             <div class="mood-grid">
                 <button class="mood-card" data-mood="stressed">
-                    <span class="mood-emoji">🥺</span>
+                    <span class="mood-emoji">ðŸ¥º</span>
                     <span class="mood-label">A bit stressed</span>
                 </button>
                 <button class="mood-card" data-mood="tired">
-                    <span class="mood-emoji">🥱</span>
+                    <span class="mood-emoji">ðŸ¥±</span>
                     <span class="mood-label">Tired / Low Energy</span>
                 </button>
                 <button class="mood-card" data-mood="okay">
-                    <span class="mood-emoji">🙂</span>
+                    <span class="mood-emoji">ðŸ™‚</span>
                     <span class="mood-label">Just Okay</span>
                 </button>
                 <button class="mood-card" data-mood="happy">
-                    <span class="mood-emoji">🥰</span>
+                    <span class="mood-emoji">ðŸ¥°</span>
                     <span class="mood-label">Happy & Peaceful</span>
                 </button>
                 <button class="mood-card" data-mood="missing">
-                    <span class="mood-emoji">💭</span>
+                    <span class="mood-emoji">ðŸ’­</span>
                     <span class="mood-label">Missing You</span>
                 </button>
                 <button class="mood-card" data-mood="need_hug">
-                    <span class="mood-emoji">🫂</span>
+                    <span class="mood-emoji">ðŸ«‚</span>
                     <span class="mood-label">I Need A Long Hug</span>
                 </button>
             </div>
 
             <!-- Dynamic Mood Response Card -->
             <div id="mood-response-box" class="mood-response-box hidden">
-                <div class="response-icon" id="resp-icon">💖</div>
+                <div class="response-icon" id="resp-icon">ðŸ’–</div>
                 <h3 id="resp-title">You are doing wonderfully</h3>
                 <p id="resp-message">Loading comforting words...</p>
                 <div class="response-action" id="resp-action">
@@ -115,7 +978,7 @@
         <section class="hug-meter-section glass-panel">
             <div class="hug-content">
                 <span class="section-tag">VIRTUAL WARMTH</span>
-                <h2>The 5-Second Super Hug 🤗</h2>
+                <h2>The 5-Second Super Hug ðŸ¤—</h2>
                 <p>Press and hold the heart button below for 5 seconds to charge up your virtual hug!</p>
                 
                 <div class="hug-button-container">
@@ -124,7 +987,7 @@
                         <circle id="hug-progress-circle" class="progress-ring__circle" stroke="#ff4d8d" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
                     </svg>
                     <button id="hug-hold-btn" class="hug-hold-btn">
-                        <span class="hug-heart-icon">💖</span>
+                        <span class="hug-heart-icon">ðŸ’–</span>
                         <span id="hug-btn-label">HOLD ME</span>
                     </button>
                 </div>
@@ -145,12 +1008,12 @@
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
                             <span class="card-badge">Card 01</span>
-                            <div class="card-icon">✨</div>
+                            <div class="card-icon">âœ¨</div>
                             <h3>Your Beautiful Smile</h3>
-                            <p class="tap-hint">Tap to unlock note →</p>
+                            <p class="tap-hint">Tap to unlock note â†’</p>
                         </div>
                         <div class="flip-card-back">
-                            <div class="back-icon">🌟</div>
+                            <div class="back-icon">ðŸŒŸ</div>
                             <h4>Lighting Up The Room</h4>
                             <p>Whenever you smile genuinely, the whole day feels easier, brighter, and ten times warmer. Never forget how radiant your happiness is.</p>
                         </div>
@@ -161,12 +1024,12 @@
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
                             <span class="card-badge">Card 02</span>
-                            <div class="card-icon">🌸</div>
+                            <div class="card-icon">ðŸŒ¸</div>
                             <h3>Your Kind Heart</h3>
-                            <p class="tap-hint">Tap to unlock note →</p>
+                            <p class="tap-hint">Tap to unlock note â†’</p>
                         </div>
                         <div class="flip-card-back">
-                            <div class="back-icon">💝</div>
+                            <div class="back-icon">ðŸ’</div>
                             <h4>Pure & Gentle Soul</h4>
                             <p>The care, patience, and love you bring into life is something truly rare. You make everyone around you feel valued and safe.</p>
                         </div>
@@ -177,14 +1040,14 @@
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
                             <span class="card-badge">Card 03</span>
-                            <div class="card-icon">☕</div>
+                            <div class="card-icon">â˜•</div>
                             <h3>The Little Moments</h3>
-                            <p class="tap-hint">Tap to unlock note →</p>
+                            <p class="tap-hint">Tap to unlock note â†’</p>
                         </div>
                         <div class="flip-card-back">
-                            <div class="back-icon">☕✨</div>
+                            <div class="back-icon">â˜•âœ¨</div>
                             <h4>My Favorite Comfort</h4>
-                            <p>From our quiet tea times, random chats, shared laughs, to simply sitting together in peace — every single minute with you is my absolute favorite.</p>
+                            <p>From our quiet tea times, random chats, shared laughs, to simply sitting together in peace â€” every single minute with you is my absolute favorite.</p>
                         </div>
                     </div>
                 </div>
@@ -193,12 +1056,12 @@
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
                             <span class="card-badge">Card 04</span>
-                            <div class="card-icon">👑</div>
+                            <div class="card-icon">ðŸ‘‘</div>
                             <h3>Your Strength</h3>
-                            <p class="tap-hint">Tap to unlock note →</p>
+                            <p class="tap-hint">Tap to unlock note â†’</p>
                         </div>
                         <div class="flip-card-back">
-                            <div class="back-icon">💫</div>
+                            <div class="back-icon">ðŸ’«</div>
                             <h4>Proud of You, Always</h4>
                             <p>Even on busy days when you have so much on your plate, you handle everything with incredible grace. I am so endlessly proud of you.</p>
                         </div>
@@ -217,10 +1080,10 @@
                 </div>
                 <div class="booster-actions">
                     <button id="generate-compliment-btn" class="btn btn-primary glow-effect">
-                        <span>✨ Generate Sweet Message</span>
+                        <span>âœ¨ Generate Sweet Message</span>
                     </button>
                     <button id="copy-note-btn" class="btn btn-outline" title="Copy to clipboard">
-                        📋 Copy Note
+                        ðŸ“‹ Copy Note
                     </button>
                 </div>
             </div>
@@ -238,7 +1101,7 @@
                 <div class="envelope" id="envelope">
                     <div class="envelope-flap"></div>
                     <div class="wax-seal" id="wax-seal" title="Click to break seal">
-                        <span>❤️</span>
+                        <span>â¤ï¸</span>
                     </div>
                     <div class="letter-paper" id="letter-paper">
                         <div class="letter-inner">
@@ -253,7 +1116,7 @@
                             </div>
                             <div class="letter-footer">
                                 <p class="script-font" style="font-size: 1.5rem; color: #ff3366;">Forever & Always Yours,</p>
-                                <p style="font-weight: 700; color: #fff; letter-spacing: 0.05em;">Umar ❤️</p>
+                                <p style="font-weight: 700; color: #fff; letter-spacing: 0.05em;">Umar â¤ï¸</p>
                             </div>
                         </div>
                     </div>
@@ -267,13 +1130,13 @@
             <h2>How Much Do I Love You?</h2>
             <div class="love-counter-wrapper">
                 <div class="counter-number" id="love-counter">1,000,000</div>
-                <div class="counter-unit">and counting to infinity... 💖</div>
+                <div class="counter-unit">and counting to infinity... ðŸ’–</div>
             </div>
             <p style="color: var(--text-secondary); max-width: 500px; margin: 1rem auto 2rem;">
                 Click the heart button below as many times as you like. Every single click sends love, sparkles, and infinite affection to you!
             </p>
             <button id="send-love-burst-btn" class="btn btn-large-love glow-effect">
-                <span class="big-heart">❤️</span>
+                <span class="big-heart">â¤ï¸</span>
                 <span>Send Another +10,000 Love!</span>
             </button>
         </section>
@@ -282,11 +1145,465 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p>Crafted with endless love & devotion by Umar for his wonderful wife 💖</p>
+        <p>Crafted with endless love & devotion by Umar for his wonderful wife ðŸ’–</p>
         <p class="footer-sub">Open this whenever you need a smile, a hug, or a reminder of how cherished you are.</p>
     </footer>
 
     <!-- Audio Chime Elements (Generated via Web Audio API) -->
-    <script src="script.js"></script>
+    <script>
+/**
+ * Interactive Script for "For My Love" Mood Booster Experience
+ * Features:
+ * - Floating Heart Canvas Background
+ * - Web Audio API Synthesized Romantic Chimes
+ * - Dynamic Mood Comfort Engine
+ * - 5-Second Super Hug Meter (Touch & Mouse Support)
+ * - 3D Flip Card Interactions
+ * - Instant Affirmation Generator & Clipboard Copy
+ * - Wax Seal Envelope Animation
+ * - Infinite Love Burst Confetti & Sound
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    // -------------------------------------------------------------------------
+    // 1. Web Audio API Sound Synthesizer (Zero External Assets Needed)
+    // -------------------------------------------------------------------------
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                audioCtx = new AudioContext();
+            }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playChime(freq = 523.25, type = "sine", duration = 0.6) {
+        if (!soundEnabled) return;
+        try {
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            // Exponential decay for soft gentle chime
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) {
+            console.log("Audio not allowed yet:", e);
+        }
+    }
+
+    function playChord(freqs = [523.25, 659.25, 783.99, 1046.50]) {
+        if (!soundEnabled) return;
+        freqs.forEach((f, idx) => {
+            setTimeout(() => playChime(f, "sine", 0.8), idx * 70);
+        });
+    }
+
+    // Sound toggle button
+    const soundBtn = document.getElementById("sound-btn");
+    const soundIcon = document.getElementById("sound-icon");
+    const soundText = document.getElementById("sound-text");
+
+    soundBtn.addEventListener("click", () => {
+        initAudio();
+        soundEnabled = !soundEnabled;
+        if (soundEnabled) {
+            soundIcon.textContent = "ðŸ””";
+            soundText.textContent = "Sound: ON";
+            playChord([659.25, 783.99, 1046.50]);
+        } else {
+            soundIcon.textContent = "ðŸ”•";
+            soundText.textContent = "Sound: OFF";
+        }
+    });
+
+    // -------------------------------------------------------------------------
+    // 2. Ambient Floating Hearts Canvas
+    // -------------------------------------------------------------------------
+    const canvas = document.getElementById("ambient-canvas");
+    const ctx = canvas.getContext("2d");
+    let hearts = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class HeartParticle {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + Math.random() * 50;
+            this.size = Math.random() * 14 + 8;
+            this.speedY = Math.random() * 0.9 + 0.3;
+            this.speedX = (Math.random() - 0.5) * 0.6;
+            this.opacity = Math.random() * 0.45 + 0.15;
+            this.hue = Math.random() > 0.4 ? 340 : 280; // Pink / Purple
+            this.rotation = Math.random() * Math.PI * 2;
+            this.rotSpeed = (Math.random() - 0.5) * 0.02;
+        }
+        update() {
+            this.y -= this.speedY;
+            this.x += this.speedX;
+            this.rotation += this.rotSpeed;
+            if (this.y < -30 || this.x < -30 || this.x > canvas.width + 30) {
+                this.reset();
+            }
+        }
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.fillStyle = `hsla(${this.hue}, 85%, 65%, ${this.opacity})`;
+            ctx.beginPath();
+            const topCurveHeight = this.size * 0.3;
+            ctx.moveTo(0, topCurveHeight);
+            // Draw heart path
+            ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+            ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, (this.size + topCurveHeight) / 2, 0, this.size);
+            ctx.bezierCurveTo(0, (this.size + topCurveHeight) / 2, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+            ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    // Spawn 28 ambient particles
+    for (let i = 0; i < 28; i++) {
+        const h = new HeartParticle();
+        h.y = Math.random() * canvas.height;
+        hearts.push(h);
+    }
+
+    function animateCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hearts.forEach(h => {
+            h.update();
+            h.draw();
+        });
+        requestAnimationFrame(animateCanvas);
+    }
+    animateCanvas();
+
+    // -------------------------------------------------------------------------
+    // 3. Sparkle / Confetti Helper
+    // -------------------------------------------------------------------------
+    function triggerConfettiBurst(x = 0.5, y = 0.6) {
+        if (typeof confetti === "function") {
+            confetti({
+                particleCount: 50,
+                spread: 70,
+                origin: { x, y },
+                colors: ["#ff4d8d", "#ff2a6d", "#9d4edd", "#ffd166", "#ffffff"],
+                disableForReducedMotion: true
+            });
+        }
+    }
+
+    document.getElementById("sparkle-btn").addEventListener("click", (e) => {
+        playChord([523.25, 659.25, 783.99, 1046.50]);
+        triggerConfettiBurst(0.85, 0.2);
+    });
+
+    // -------------------------------------------------------------------------
+    // 4. Dynamic Mood Check-in System
+    // -------------------------------------------------------------------------
+    const moodData = {
+        stressed: {
+            icon: "ðŸ’†â€â™€ï¸ðŸŒ¸",
+            title: "Take A Deep Breath, You've Got This",
+            message: "You don't have to carry the whole world on your shoulders today. Drop your shoulders, unclamp your jaw, and take one slow, peaceful breath. Everything will be okay, and I am right here with you.",
+            actionText: "Send Relaxing Vibe ðŸŒ¿"
+        },
+        tired: {
+            icon: "â˜•ðŸ§¸",
+            title: "Time For Gentle Rest & Comfort",
+            message: "You have worked so hard. Put on cozy clothes, relax your mind, and let yourself rest without any guilt. You deserve all the pampering in the world.",
+            actionText: "Give Warm Hug ðŸ¤—"
+        },
+        okay: {
+            icon: "âœ¨ðŸ’–",
+            title: "Let's Make Today A Little Brighter",
+            message: "Even on ordinary days, you bring so much warmth and light into life. Here's a little reminder that you are deeply appreciated and loved.",
+            actionText: "Send Love Burst ðŸ’«"
+        },
+        happy: {
+            icon: "ðŸ¥³ðŸŒŸ",
+            title: "Your Happiness Is My Favorite Thing",
+            message: "Seeing you happy and peaceful makes everything in the world feel right! Keep shining that gorgeous smile of yours!",
+            actionText: "Celebrate Together ðŸŽ‰"
+        },
+        missing: {
+            icon: "ðŸ’Œâ¤ï¸",
+            title: "I Miss You Even More!",
+            message: "No matter how many hours in the day, I am always thinking of you and looking forward to being right by your side.",
+            actionText: "Send Giant Hug ðŸ«‚"
+        },
+        need_hug: {
+            icon: "ðŸ«‚ðŸ’–",
+            title: "Wrapping You In The Biggest Hug",
+            message: "Consider yourself tightly hugged right this second. Safe, warm, loved, and protected. You mean everything to me.",
+            actionText: "Activate Super Hug Meter ðŸ‘‡"
+        }
+    };
+
+    const moodCards = document.querySelectorAll(".mood-card");
+    const responseBox = document.getElementById("mood-response-box");
+    const respIcon = document.getElementById("resp-icon");
+    const respTitle = document.getElementById("resp-title");
+    const respMessage = document.getElementById("resp-message");
+    const respAction = document.getElementById("resp-action");
+
+    moodCards.forEach(card => {
+        card.addEventListener("click", () => {
+            moodCards.forEach(c => c.classList.remove("active"));
+            card.classList.add("active");
+
+            const moodKey = card.dataset.mood;
+            const data = moodData[moodKey] || moodData.okay;
+
+            respIcon.textContent = data.icon;
+            respTitle.textContent = data.title;
+            respMessage.textContent = data.message;
+
+            respAction.innerHTML = `
+                <button class="btn btn-primary" id="mood-action-btn">
+                    ${data.actionText}
+                </button>
+            `;
+
+            responseBox.classList.remove("hidden");
+            playChord([587.33, 739.99, 880.00]);
+            triggerConfettiBurst(0.5, 0.4);
+
+            document.getElementById("mood-action-btn").addEventListener("click", () => {
+                playChord([659.25, 830.61, 987.77, 1318.51]);
+                triggerConfettiBurst(0.5, 0.5);
+                const hugSection = document.querySelector(".hug-meter-section");
+                hugSection.scrollIntoView({ behavior: "smooth" });
+            });
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 5. The 5-Second Super Hug Meter
+    // -------------------------------------------------------------------------
+    const hugBtn = document.getElementById("hug-hold-btn");
+    const hugCircle = document.getElementById("hug-progress-circle");
+    const hugStatus = document.getElementById("hug-status");
+    const hugLabel = document.getElementById("hug-btn-label");
+
+    const circleCircumference = 2 * Math.PI * 70; // 439.82
+    let holdStartTime = 0;
+    let holdInterval = null;
+    const requiredHoldTime = 4500; // 4.5 seconds
+
+    function startHolding(e) {
+        if (e) e.preventDefault();
+        initAudio();
+        hugBtn.classList.add("holding");
+        holdStartTime = Date.now();
+        hugStatus.textContent = "Charging up your warm hug... Hold tight! ðŸ’–";
+        hugStatus.style.color = "var(--primary-pink)";
+
+        playChime(440, "sine", 0.2);
+
+        holdInterval = setInterval(() => {
+            const elapsed = Date.now() - holdStartTime;
+            const progress = Math.min(elapsed / requiredHoldTime, 1);
+            const offset = circleCircumference - (progress * circleCircumference);
+            hugCircle.style.strokeDashoffset = offset;
+
+            // Pitch climbs as you hold
+            if (elapsed % 600 < 50) {
+                playChime(440 + (progress * 400), "sine", 0.15);
+            }
+
+            if (progress >= 1) {
+                completeHug();
+            }
+        }, 30);
+    }
+
+    function stopHolding() {
+        if (!holdStartTime) return;
+        clearInterval(holdInterval);
+        hugBtn.classList.remove("holding");
+        hugCircle.style.strokeDashoffset = circleCircumference;
+        
+        if (Date.now() - holdStartTime < requiredHoldTime) {
+            hugStatus.textContent = "Hold for the full 5 seconds to complete your hug!";
+            hugStatus.style.color = "var(--text-secondary)";
+        }
+        holdStartTime = 0;
+    }
+
+    function completeHug() {
+        clearInterval(holdInterval);
+        holdStartTime = 0;
+        hugBtn.classList.remove("holding");
+        hugCircle.style.strokeDashoffset = 0;
+
+        hugLabel.textContent = "HUG SENT! ðŸ¥°";
+        hugStatus.textContent = "ðŸŽ‰ Virtual Hug Successfully Delivered with 100% Pure Love!";
+        hugStatus.style.color = "var(--accent-gold)";
+
+        playChord([523.25, 659.25, 783.99, 1046.50, 1318.51]);
+
+        // Celebration Confetti
+        if (typeof confetti === "function") {
+            confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
+            setTimeout(() => {
+                confetti({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 } });
+            }, 250);
+        }
+
+        setTimeout(() => {
+            hugLabel.textContent = "HOLD ME";
+            hugCircle.style.strokeDashoffset = circleCircumference;
+        }, 5000);
+    }
+
+    hugBtn.addEventListener("mousedown", startHolding);
+    window.addEventListener("mouseup", stopHolding);
+    hugBtn.addEventListener("touchstart", startHolding, { passive: false });
+    window.addEventListener("touchend", stopHolding);
+
+    // Hero quick hug button
+    document.getElementById("quick-hug-btn").addEventListener("click", () => {
+        document.querySelector(".hug-meter-section").scrollIntoView({ behavior: "smooth" });
+        startHolding();
+        setTimeout(completeHug, 1000);
+    });
+
+    // -------------------------------------------------------------------------
+    // 6. Flip Cards Tap Interaction
+    // -------------------------------------------------------------------------
+    const flipCards = document.querySelectorAll(".flip-card");
+    flipCards.forEach(card => {
+        card.addEventListener("click", () => {
+            card.classList.toggle("flipped");
+            playChime(659.25, "sine", 0.4);
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 7. Instant Sweet Message / Affirmation Generator
+    // -------------------------------------------------------------------------
+    const compliments = [
+        "Your smile is honestly my favorite sight in the entire world. âœ¨",
+        "You are so remarkably capable, intelligent, and strong. Don't ever doubt yourself! ðŸ‘‘",
+        "The world is simply a warmer and better place because you are in it. ðŸŒ¸",
+        "Thank you for being my favorite person to talk to, laugh with, and do life with. ðŸ’–",
+        "Whatever challenge is on your mind today â€” you are bigger and stronger than it. ðŸ’ª",
+        "You make loving you the easiest and sweetest thing in the world. ðŸŒ¹",
+        "Just a reminder: I am so endlessly proud of everything you do. ðŸŒŸ",
+        "Your laugh is my favorite sound track. Never stop smiling! ðŸŽ¶",
+        "No matter what happens today, remember someone loves you unconditionally. â¤ï¸",
+        "You have a heart of pure gold, and I am the luckiest person to have you. ðŸ’"
+    ];
+
+    const boosterText = document.getElementById("booster-text");
+    const generateBtn = document.getElementById("generate-compliment-btn");
+    const copyBtn = document.getElementById("copy-note-btn");
+    let currentComplimentIdx = 0;
+
+    generateBtn.addEventListener("click", () => {
+        let newIdx;
+        do {
+            newIdx = Math.floor(Math.random() * compliments.length);
+        } while (newIdx === currentComplimentIdx && compliments.length > 1);
+
+        currentComplimentIdx = newIdx;
+        boosterText.style.opacity = 0;
+        playChord([587.33, 739.99, 880.00]);
+
+        setTimeout(() => {
+            boosterText.textContent = `"${compliments[currentComplimentIdx]}"`;
+            boosterText.style.opacity = 1;
+            triggerConfettiBurst(0.5, 0.7);
+        }, 200);
+    });
+
+    copyBtn.addEventListener("click", () => {
+        const textToCopy = boosterText.textContent.replace(/"/g, '');
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = "âœ… Copied to Clipboard!";
+            playChime(880, "sine", 0.3);
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 8. Wax Seal Love Letter Interaction
+    // -------------------------------------------------------------------------
+    const envelope = document.getElementById("envelope");
+    const waxSeal = document.getElementById("wax-seal");
+    const dateElement = document.getElementById("letter-current-date");
+
+    if (dateElement) {
+        const now = new Date();
+        dateElement.textContent = now.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    }
+
+    waxSeal.addEventListener("click", () => {
+        envelope.classList.add("opened");
+        playChord([523.25, 659.25, 783.99, 1046.50, 1318.51]);
+        triggerConfettiBurst(0.5, 0.5);
+    });
+
+    // -------------------------------------------------------------------------
+    // 9. Grand Finale Love Counter
+    // -------------------------------------------------------------------------
+    let loveCount = 1000000;
+    const loveCounterEl = document.getElementById("love-counter");
+    const sendLoveBtn = document.getElementById("send-love-burst-btn");
+
+    sendLoveBtn.addEventListener("click", () => {
+        loveCount += 10000;
+        loveCounterEl.textContent = loveCount.toLocaleString();
+        
+        loveCounterEl.style.transform = "scale(1.15)";
+        setTimeout(() => {
+            loveCounterEl.style.transform = "scale(1)";
+        }, 150);
+
+        playChord([659.25, 830.61, 987.77, 1318.51, 1567.98]);
+
+        // Dual side confetti cannons
+        if (typeof confetti === "function") {
+            confetti({ particleCount: 75, angle: 60, spread: 70, origin: { x: 0.1, y: 0.7 } });
+            confetti({ particleCount: 75, angle: 120, spread: 70, origin: { x: 0.9, y: 0.7 } });
+        }
+    });
+});
+
+</script>
 </body>
 </html>
+
